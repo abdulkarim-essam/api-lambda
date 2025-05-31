@@ -1,4 +1,4 @@
-from typing import Callable, Dict, Tuple, Any, Union, Optional, Protocol, List, Literal
+from typing import Callable, Dict, Tuple, Any, Union, cast, Optional, Protocol, List, Literal
 from .response import create_response, ResponseData
 from json import loads, JSONDecodeError
 from .request import HTTPRequest
@@ -265,12 +265,12 @@ def lambda_handler(
             query=event.get("queryStringParameters") or {},
             headers=event.get("headers") or {},
             context=event.get("requestContext", {}).get("authorizer") or {},
-            method=http_method
+            method=cast(HTTPMethod, http_method)
         )
 
         try:
             # Call the handler function with the Request object
-            result: Union[ResponseData, Dict[str, Any], Any] = handler(request_data)
+            result: Union[ResponseData, Dict[str, Any]] = handler(request_data)
             
             # Handle different return types from handlers
             if isinstance(result, tuple) and len(result) == 2:
