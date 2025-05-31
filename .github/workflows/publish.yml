@@ -7,6 +7,7 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    environment: PYPI_API_TOKEN  # Add this line to use the environment
     
     steps:
     - uses: actions/checkout@v4
@@ -27,9 +28,14 @@ jobs:
     - name: Check package
       run: twine check dist/*
     
+    - name: List built packages
+      run: ls -la dist/
+    
     - name: Publish to PyPI with twine
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        TWINE_NON_INTERACTIVE: 1
       run: |
-        twine upload dist/*
+        echo "Publishing to PyPI..."
+        twine upload --verbose dist/*
