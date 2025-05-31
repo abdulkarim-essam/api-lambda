@@ -1,12 +1,11 @@
 import pytest
 from unittest.mock import Mock
 import json
-from typing import Dict, Any, Optional, Callable
+from typing import Dict, Any, Optional, Tuple
 
 from api_lambda.router import (
     route, lambda_handler, api_handler, match_path, normalize_path,
-    extract_path_from_event, find_matching_route, ROUTES, set_error_response_factory,
-    RouteHandler
+    extract_path_from_event, find_matching_route, ROUTES
 )
 from api_lambda.request import HTTPRequest
 
@@ -41,7 +40,7 @@ class TestRouteDecorator:
     def test_path_normalization(self) -> None:
         """Test that Flask-style paths are normalized to API Gateway style."""
         @route("/users/<id>/posts/<post_id>", methods="GET")
-        def test_handler(request: HTTPRequest) -> Dict[str, str]:
+        def test_handler(request: HTTPRequest) -> Dict[str, str]: # type: ignore
             return {"message": "test"}
         
         assert ("/users/{id}/posts/{post_id}", "GET") in ROUTES
@@ -166,7 +165,7 @@ class TestLambdaHandler:
             return {"user_id": request.path["id"], "name": "John Doe"}
         
         @route("/users", methods="POST")
-        def create_user(request: HTTPRequest) -> tuple[Dict[str, Any], int]:
+        def create_user(request: HTTPRequest) -> Tuple[Dict[str, Any], int]:
             return {"created": request.body}, 201
         
         @route("/error", methods="GET")
