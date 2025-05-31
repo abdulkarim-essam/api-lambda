@@ -277,6 +277,7 @@ class TestLambdaHandler:
         response = lambda_handler(event, context)
         
         # Should still process the request, just with empty body
+        print(response)
         assert response["statusCode"] == 201
     
     def test_exception_handling(self) -> None:

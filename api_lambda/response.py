@@ -1,7 +1,7 @@
 from json import dumps
 from typing import Any, Dict, Tuple
 
-ResponseData = Tuple[int, Dict[str, Any]]
+ResponseData = Tuple[Dict[str, Any], int]
 
 
 def create_response(status_code: int, body: Any, cors: bool = False, cors_origin: str = "*") -> Dict[str, Any]:

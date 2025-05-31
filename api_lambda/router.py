@@ -275,7 +275,7 @@ def lambda_handler(
             # Handle different return types from handlers
             if isinstance(result, tuple) and len(result) == 2:
                 # ResponseData is (status_code, body) format
-                status_code, response_body = result
+                response_body, status_code = result
             else:
                 response_body, status_code = result, 200
             
